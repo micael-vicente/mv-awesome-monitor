@@ -13,8 +13,9 @@ Currently, only supports `HTTP_AVAILABILITY` (checks if given URL responds in th
 4. [How to use](#-how-to-use)
    1. [Create job](#create-a-new-job)
    2. [View jobs](#view-all-jobs)
-   3. [Delete job](#delete-a-job)
-   4. [View results](#view-a-jobs-results)
+   3. [Update job](#update-a-job)
+   4. [Delete job](#delete-a-job)
+   5. [View results](#view-a-jobs-results)
 5. [How to extend](#-how-to-extend)
 6. [Future iterations](#-future-iterations)
 
