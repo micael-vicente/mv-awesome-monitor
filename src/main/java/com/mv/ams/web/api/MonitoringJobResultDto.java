@@ -13,11 +13,9 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class MonitoringJobDto {
-    private Long id;
-    private String address;
-    private String cronExpression;
-    private Boolean enabled;
-    private String monitoringType;
-    private LocalDateTime createdAt;
+public class MonitoringJobResultDto {
+    private Long durationMillis;
+    private LocalDateTime executedAt;
+    private String status;
+    private String statusReason;
 }

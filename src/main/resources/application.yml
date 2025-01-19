@@ -1,10 +1,22 @@
 server:
   port: 8085
 
+logging:
+  level:
+    ROOT: info
+
+application:
+  monitoring:
+    http-timeout-millis: 10000
+  scheduling:
+    max-jobs: 5
+
 spring:
   quartz:
     job-store-type: jdbc
     initialize-schema: never
+    properties:
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
@@ -28,7 +40,8 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
 
-application:
-  monitoring:
-    cron:
-      min-interval-seconds: 10
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs

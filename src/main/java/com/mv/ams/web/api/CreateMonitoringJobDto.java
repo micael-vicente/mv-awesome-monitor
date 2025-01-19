@@ -1,6 +1,7 @@
 package com.mv.ams.web.api;
 
-import com.mv.ams.services.MonitoringType;
+import com.mv.ams.services.monitoring.MonitoringType;
+import com.mv.ams.web.validation.IsEnumMember;
 import com.mv.ams.web.validation.IsValidCronExpression;
 import com.mv.ams.web.validation.IsValidURL;
 import jakarta.validation.constraints.NotNull;
@@ -26,5 +27,8 @@ public class CreateMonitoringJobDto {
     private String cronExpression;
 
     @NotNull
-    private MonitoringType monitoringType;
+    @IsEnumMember(enumClass = MonitoringType.class, appendValuesToMessage = true)
+    private String monitoringType;
+
+    private Boolean enabled;
 }

@@ -1,24 +1,27 @@
 package com.mv.ams.services.monitoring;
 
-import com.mv.ams.persistence.model.MonitoringJobResultEntity;
-import com.mv.ams.persistence.repository.MonitoringJobResultRepository;
-import com.mv.ams.services.MonitoringType;
+import com.mv.ams.services.MonitoringJobResult;
+import com.mv.ams.services.scheduling.JobDetailsFields;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-@Service
-public class HttpAvailabilityMonitorJob extends BaseMonitorJob {
+import java.time.LocalDateTime;
 
-    private final RestTemplate client;
+/**
+ * A type o {@link MonitorJob} which allows monitoring availability
+ * based on HTTP response status.
+ * Serves as base for any other {@link }
+ */
+@Component
+public class HttpAvailabilityMonitorJob extends HttpMonitorJob {
 
-    public HttpAvailabilityMonitorJob(MonitoringJobResultRepository repository, RestTemplate client) {
-        super(repository);
-        this.client = client;
+    private final MonitoringResultSaver resultSaver;
+
+    public HttpAvailabilityMonitorJob(RestTemplate client, MonitoringResultSaver resultSaver) {
+        super(client);
+        this.resultSaver = resultSaver;
     }
 
     @Override
@@ -26,29 +29,30 @@ public class HttpAvailabilityMonitorJob extends BaseMonitorJob {
         return MonitoringType.HTTP_AVAILABILITY;
     }
 
-    private String status(HttpStatusCode statusCode) {
-        if(statusCode.is2xxSuccessful()) {
-            return "SUCCESS";
-        } else {
-            return "ERROR";
-        }
-    }
-
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+    public void execute(JobExecutionContext context) {
+        HttpExecutionResult executionResult = super.executeHttpGetRequest(context);
+        long durationMillis = executionResult.getRequestDurationMillis();
 
-        String address = context.getJobDetail().getJobDataMap().getString("address");
+        Long jobId = context.getJobDetail()
+                .getJobDataMap()
+                .getLong(JobDetailsFields.JOB_ID_FIELD);
 
-        ResponseEntity<String> response = client.getForEntity(address, String.class);
-        stopWatch.stop();
-        long totalTimeMillis = stopWatch.getTotalTimeMillis();
+        MonitoringJobResult result = new MonitoringJobResult();
+        result.setExecutedAt(LocalDateTime.now());
+        result.setJobId(jobId);
+        result.setDurationMillis(durationMillis);
 
-        MonitoringJobResultEntity result = new MonitoringJobResultEntity();
-        result.setResult(status(response.getStatusCode()));
-        result.setDurationMillis(totalTimeMillis);
+        if(executionResult.isFailedDueToError()) {
+            result.setStatus(MonitoringStatus.FAILURE);
+            result.setStatusReason(executionResult.getErrorMessage());
+        } else {
+            ResponseEntity<String> response = executionResult.getResponse();
+            boolean success = response.getStatusCode().is2xxSuccessful();
+            result.setStatus(success ? MonitoringStatus.SUCCESS : MonitoringStatus.FAILURE);
+            result.setStatusReason(success ? null : "Expected status 2xx and got: " + response.getStatusCode());
+        }
 
-        super.registerResult(result);
+        resultSaver.saveResult(result);
     }
 }

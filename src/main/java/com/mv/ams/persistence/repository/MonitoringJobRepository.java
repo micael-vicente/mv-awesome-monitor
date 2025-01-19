@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MonitoringJobRepository extends JpaRepository<MonitoringJobEntity, Long> {
-
-    boolean existsByShortAddress(String shortAddress);
 }

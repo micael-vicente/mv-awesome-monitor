@@ -1,6 +1,5 @@
 package com.mv.ams.services.monitoring;
 
-import com.mv.ams.services.MonitoringType;
 import org.quartz.Job;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +7,10 @@ import java.util.EnumMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Component that registers all available {@link MonitorJob}
+ * by their discriminator.
+ */
 @Component
 public class MonitoringRouter {
 
@@ -22,6 +25,11 @@ public class MonitoringRouter {
             ));
     }
 
+    /**
+     * Gets the class matching the {@link MonitoringType} discriminator.
+     * @param type the discriminator
+     * @return the class that matches the discriminator
+     */
     public Class<? extends Job> getMonitor(MonitoringType type) {
         return registry.get(type);
     }

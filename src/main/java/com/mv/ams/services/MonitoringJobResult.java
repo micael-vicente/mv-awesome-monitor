@@ -1,4 +1,4 @@
-package com.mv.ams.web.api;
+package com.mv.ams.services;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class MonitoringJobDto {
+public class MonitoringJobResult {
     private Long id;
-    private String address;
-    private String cronExpression;
-    private Boolean enabled;
-    private String monitoringType;
-    private LocalDateTime createdAt;
+    private Long jobId;
+    private LocalDateTime executedAt;
+    private Long durationMillis;
+    private String status;
+    private String statusReason;
 }
