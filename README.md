@@ -80,7 +80,7 @@ Accepts parameters `size` and `page`, regarding pagination.
 Currently, only the field `enabled` of the job can be updated.
 This allows the job to be enabled and disabled.
 
-`PATCH /api/v1/jobs/:id`
+`PUT /api/v1/jobs/:id`
 
 ```json
 {
@@ -124,3 +124,4 @@ These beans need to either be discriminated and selected during job creation or 
 - Add support for using both cron expressions and intervals in seconds when scheduling
 - Add support for new `ResultSaver` types
 - Decouple Results from Jobs
+- Improve logging and documentation
