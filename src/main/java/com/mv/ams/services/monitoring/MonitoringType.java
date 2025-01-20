@@ -1,7 +1,7 @@
 package com.mv.ams.services.monitoring;
 
 /**
- * Discriminators
+ * Discriminators of the monitoring jobs.
  */
 public enum MonitoringType {
     HTTP_AVAILABILITY

@@ -26,13 +26,13 @@ public class DBMonitoringJobResultService implements MonitoringJobResultService 
     public Page<MonitoringJobResult> getAllJobResults(Long jobId,
                                                       LocalDateTime executedAtStart,
                                                       LocalDateTime executedAtEnd,
-                                                      String result,
+                                                      String status,
                                                       PageRequest pageable) {
 
         PageRequest sortingByExecution = pageable.withSort(Sort.Direction.DESC, "executedAt");
 
         Page<MonitoringJobResultEntity> results =
-            resultRepository.findByFilters(jobId, executedAtStart, executedAtEnd, result, sortingByExecution);
+            resultRepository.findByFilters(jobId, executedAtStart, executedAtEnd, status, sortingByExecution);
 
         return results.map(mapper::map);
     }

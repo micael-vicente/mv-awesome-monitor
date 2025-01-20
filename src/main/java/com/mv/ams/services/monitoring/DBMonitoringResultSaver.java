@@ -24,7 +24,13 @@ public class DBMonitoringResultSaver implements MonitoringResultSaver {
     private final MonitoringJobRepository jobRepository;
     private final ServicePersistenceMapper mapper;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    /**
+     * Saves a monitoring job result to the database linked to monitoring job.
+     * Creates a new transaction to prevent rolling back existing one.
+     *
+     * @param result the result to be saved
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveResult(MonitoringJobResult result) {
         log.debug("Attempting to save the result to DB. Result: {}", result);

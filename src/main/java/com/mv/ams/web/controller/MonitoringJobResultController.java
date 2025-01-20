@@ -25,6 +25,17 @@ public class MonitoringJobResultController {
     private final MonitoringJobResultService resultService;
     private final ServiceDtoMapper mapper;
 
+    /**
+     * Retrieves the results of a scheduled monitoring job.
+     *
+     * @param id the id of the monitoring job
+     * @param status the status of the results
+     * @param executedAtStart since when to look for results
+     * @param executedAtEnd until when to look for results
+     * @param page the page wanted
+     * @param size the number of elements to include in each page
+     * @return results in a paginated manner, if none found empty page
+     */
     @GetMapping("/jobs/{id}/results")
     public ResponseEntity<PageDto<MonitoringJobResultDto>> getAllJobResults(
             @PathVariable(value = "id") Long id,
