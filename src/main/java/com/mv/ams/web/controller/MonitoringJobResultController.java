@@ -8,6 +8,7 @@ import com.mv.ams.web.api.PageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,8 +41,10 @@ public class MonitoringJobResultController {
     public ResponseEntity<PageDto<MonitoringJobResultDto>> getAllJobResults(
             @PathVariable(value = "id") Long id,
             @RequestParam(value = "status", required = false) String status,
-            @RequestParam(value = "executedAtStart", required = false) LocalDateTime executedAtStart,
-            @RequestParam(value = "executedAtEnd", required = false) LocalDateTime executedAtEnd,
+            @RequestParam(value = "executedAtStart", required = false)
+                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime executedAtStart,
+            @RequestParam(value = "executedAtEnd", required = false)
+                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime executedAtEnd,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
