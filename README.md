@@ -8,21 +8,28 @@ Currently, only supports `HTTP_AVAILABILITY` (checks if given URL responds in th
 
 ## 🧾 Table of contents
 1. [Requirements](#-requirements)
-2. [How to build](#-how-to-build)
-3. [How to run](#-how-to-run)
-4. [How to use](#-how-to-use)
+2. [Getting started](#-getting-started) 
+3. [How to build](#-how-to-build)
+4. [How to run](#-how-to-run)
+5. [How to use](#-how-to-use)
    1. [Create job](#create-a-new-job)
    2. [View jobs](#view-all-jobs)
    3. [Update job](#update-a-job)
    4. [Delete job](#delete-a-job)
    5. [View results](#view-a-jobs-results)
-5. [How to extend](#-how-to-extend)
-6. [Future iterations](#-future-iterations)
+6. [How to extend](#-how-to-extend)
+7. [Future iterations](#-future-iterations)
 
 ## 📚 Requirements
 - Maven (mvn wrapper provided)
 - Docker
 - Java 21 (preferably [temurin](https://adoptium.net/))
+
+## 🎯 Getting started
+```shell
+git clone https://github.com/micael-vicente/mv-awesome-monitor.git
+cd mv-awesome-monitor
+```
 
 ## 🏗️ How to build
 All the commands are to be executed at the **root of the project**.
