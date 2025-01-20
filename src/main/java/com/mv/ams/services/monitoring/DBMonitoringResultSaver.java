@@ -7,7 +7,6 @@ import com.mv.ams.persistence.repository.MonitoringJobRepository;
 import com.mv.ams.services.MonitoringJobResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.SchedulingException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,17 +29,19 @@ public class DBMonitoringResultSaver implements MonitoringResultSaver {
      *
      * @param result the result to be saved
      */
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void saveResult(MonitoringJobResult result) {
         log.debug("Attempting to save the result to DB. Result: {}", result);
         Long jobId = result.getJobId();
 
         MonitoringJobEntity job = jobRepository.findById(jobId)
-            .orElseThrow(() -> {
-                String msg = "Result cannot be save. Broken link, job does not exist. ID: " + jobId;
-                return new SchedulingException(msg);
-            });
+            .orElse(null);
+
+        if(job == null) {
+            //Job no longer exists
+            return;
+        }
 
         MonitoringJobResultEntity resultEntity = mapper.map(result);
         job.addResult(resultEntity);

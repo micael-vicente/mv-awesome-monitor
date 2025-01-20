@@ -16,6 +16,7 @@ spring:
     job-store-type: jdbc
     initialize-schema: never
     properties:
+      org.quartz.scheduler.idleWaitTime: 5000
       org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
