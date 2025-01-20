@@ -62,7 +62,7 @@ docker-compose -f docker/docker-compose.yml --profile full-app up
 ```
 **Stop**
 ```shell
-docker-compose -f docker/docker-compose.yml --profile full-app up
+docker-compose -f docker/docker-compose.yml --profile full-app down
 ```
 
 ### Docker compose - infra only
