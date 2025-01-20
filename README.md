@@ -9,8 +9,8 @@ Currently, only supports `HTTP_AVAILABILITY` (checks if given URL responds in th
 ## 🧾 Table of contents
 1. [Requirements](#-requirements)
 2. [Getting started](#-getting-started) 
-3. [How to build](#-how-to-build)
-4. [How to run](#-how-to-run)
+3. [How to build](#how-to-build)
+4. [How to run](#how-to-run)
 5. [How to use](#-how-to-use)
    1. [Create job](#create-a-new-job)
    2. [View jobs](#view-all-jobs)
@@ -28,10 +28,13 @@ Currently, only supports `HTTP_AVAILABILITY` (checks if given URL responds in th
 ## 🎯 Getting started
 ```shell
 git clone https://github.com/micael-vicente/mv-awesome-monitor.git
+```
+
+```shell
 cd mv-awesome-monitor
 ```
 
-## 🏗️ How to build
+## How to build
 All the commands are to be executed at the **root of the project**.
 ### Application
 #### On Windows
@@ -49,7 +52,7 @@ All the commands are to be executed at the **root of the project**.
 docker build -t mv-monitor-app:v1 .
 ```
 
-## ⏯️ How to run
+## How to run
 ### Docker compose - infra + app
 Starts required infrastructure and the application according to the config inside the docker compose. 
 ```shell
