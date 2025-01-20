@@ -8,6 +8,7 @@ import com.mv.ams.mapper.ServicePersistenceMapperImpl;
 import com.mv.ams.persistence.model.MonitoringJobEntity;
 import com.mv.ams.persistence.repository.MonitoringJobRepository;
 import com.mv.ams.services.scheduling.MonitoringJobScheduler;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -43,7 +45,7 @@ class MonitoringJobServiceTest {
         MonitoringJobEntity toBeSaved = JobFixture.everyMinJobEntity("test", false);
         MonitoringJobEntity entityPersisted = JobFixture.everyMinJobEntity("test", false);
         entityPersisted.setId(1L);
-        entityPersisted.setCreatedAt(LocalDateTime.now());
+        entityPersisted.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         Mockito.when(mockJobRepository.save(matchesMonitoringJob(toBeSaved))).thenReturn(entityPersisted);
 
@@ -70,15 +72,17 @@ class MonitoringJobServiceTest {
     }
 
     @Test
+    @SneakyThrows
     void createJob_jobEnabledAndValid_jobScheduledAndPersisted() {
         MonitoringJob jobRequest = JobFixture.everyMinJob("test", true);
         MonitoringJob jobAfterPersistence = JobFixture.everyMinJob("test", true);
         MonitoringJobEntity toBeSaved = JobFixture.everyMinJobEntity("test", true);
         MonitoringJobEntity entityPersisted = JobFixture.everyMinJobEntity("test", true);
         entityPersisted.setId(1L);
-        entityPersisted.setCreatedAt(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        entityPersisted.setCreatedAt(now);
         jobAfterPersistence.setId(1L);
-        jobAfterPersistence.setCreatedAt(LocalDateTime.now());
+        jobAfterPersistence.setCreatedAt(now);
 
         Mockito.when(mockJobRepository.save(matchesMonitoringJob(toBeSaved))).thenReturn(entityPersisted);
         Mockito.doNothing().when(mockScheduler).validateCanSchedule();
@@ -100,7 +104,7 @@ class MonitoringJobServiceTest {
         Long id = 1L;
         MonitoringJobEntity entity = JobFixture.everyMinJobEntity("test", true);
         entity.setId(id);
-        entity.setCreatedAt(LocalDateTime.now());
+        entity.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         Mockito.when(mockJobRepository.findById(id)).thenReturn(Optional.of(entity));
 
@@ -131,7 +135,7 @@ class MonitoringJobServiceTest {
         UpdateMonitoringJob request = new UpdateMonitoringJob(true);
         MonitoringJobEntity existingEntity = JobFixture.everyMinJobEntity("test", false);
         existingEntity.setId(id);
-        existingEntity.setCreatedAt(LocalDateTime.now().minusDays(1));
+        existingEntity.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minusDays(1));
 
         Mockito.when(mockJobRepository.findById(id)).thenReturn(Optional.of(existingEntity));
         Mockito.when(mockJobRepository.save(existingEntity)).thenReturn(existingEntity);
@@ -153,7 +157,7 @@ class MonitoringJobServiceTest {
         UpdateMonitoringJob request = new UpdateMonitoringJob(false);
         MonitoringJobEntity existingEntity = JobFixture.everyMinJobEntity("test", true);
         existingEntity.setId(id);
-        existingEntity.setCreatedAt(LocalDateTime.now().minusDays(1));
+        existingEntity.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minusDays(1));
 
         Mockito.when(mockJobRepository.findById(id)).thenReturn(Optional.of(existingEntity));
         Mockito.when(mockJobRepository.save(existingEntity)).thenReturn(existingEntity);
@@ -173,7 +177,7 @@ class MonitoringJobServiceTest {
         Long id = 1L;
         MonitoringJobEntity existingEntity = JobFixture.everyMinJobEntity("test", true);
         existingEntity.setId(id);
-        existingEntity.setCreatedAt(LocalDateTime.now().minusDays(1));
+        existingEntity.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minusDays(1));
 
         Mockito.when(mockJobRepository.findById(id)).thenReturn(Optional.of(existingEntity));
         Mockito.doNothing().when(mockJobRepository).deleteById(id);
@@ -191,7 +195,7 @@ class MonitoringJobServiceTest {
         Long id = 1L;
         MonitoringJobEntity existingEntity = JobFixture.everyMinJobEntity("test", false);
         existingEntity.setId(id);
-        existingEntity.setCreatedAt(LocalDateTime.now().minusDays(1));
+        existingEntity.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minusDays(1));
 
         Mockito.when(mockJobRepository.findById(id)).thenReturn(Optional.of(existingEntity));
         Mockito.doNothing().when(mockJobRepository).deleteById(id);
