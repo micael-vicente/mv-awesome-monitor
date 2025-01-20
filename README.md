@@ -55,15 +55,28 @@ docker build -t mv-monitor-app:v1 .
 ## How to run
 ### Docker compose - infra + app
 Starts required infrastructure and the application according to the config inside the docker compose. 
+<br></br>
+**Start**
 ```shell
-docker-compose -f docker/docker-compose.yml --profile full-app up -d
+docker-compose -f docker/docker-compose.yml --profile full-app up
+```
+**Stop**
+```shell
+docker-compose -f docker/docker-compose.yml --profile full-app up
 ```
 
 ### Docker compose - infra only
 Starts required infrastructure ony. Useful when debugging or running through IDE.
+<br></br>
+**Start**
 ```shell
-docker-compose -f docker/docker-compose.yml --profile infra up -d
+docker-compose -f docker/docker-compose.yml --profile infra up
 ```
+**Stop**
+```shell
+docker-compose -f docker/docker-compose.yml --profile infra down
+```
+
 ## 🧑‍💻 How to use
 Endpoints can be operated through a swagger ui. Usually available at http://localhost:8085/swagger-ui/index.html#/
 
@@ -76,7 +89,7 @@ If the job is created with `enabled` set as true, the job won't be scheduled unt
 ```json
 {
   "address": "https://google.com",
-  "cronExpression": "*/1 * * ? * *",
+  "cronExpression": "*/10 * * ? * *",
   "enabled": true,
   "monitoringType": "HTTP_AVAILABILITY"
 }
@@ -136,3 +149,4 @@ These beans need to either be discriminated and selected during job creation or 
 - Add support for new `ResultSaver` types
 - Decouple Results from Jobs
 - Improve logging and documentation
+- Validate frequency not to high 
