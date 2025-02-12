@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Objects;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +31,7 @@ class HttpAvailabilityMonitorJobTest {
 
     @BeforeEach
     void setUp() {
-        Mockito.clearInvocations(client, resultSaver);
+        Mockito.clearInvocations(client, resultSaver, fakeContext);
     }
 
     @Test
@@ -46,6 +47,10 @@ class HttpAvailabilityMonitorJobTest {
         );
 
         service.execute(fakeContext);
+
+        Mockito.verify(resultSaver, Mockito.times(1)).saveResult(any());
+        Mockito.verify(client, Mockito.times(1)).getForEntity("test", String.class);
+        Mockito.verify(fakeContext, Mockito.times(2)).getJobDetail();
     }
 
     @Test
@@ -62,6 +67,10 @@ class HttpAvailabilityMonitorJobTest {
         );
 
         service.execute(fakeContext);
+
+        Mockito.verify(resultSaver, Mockito.times(1)).saveResult(any());
+        Mockito.verify(client, Mockito.times(1)).getForEntity("test", String.class);
+        Mockito.verify(fakeContext, Mockito.times(2)).getJobDetail();
     }
 
     @Test
@@ -77,6 +86,10 @@ class HttpAvailabilityMonitorJobTest {
         );
 
         service.execute(fakeContext);
+
+        Mockito.verify(resultSaver, Mockito.times(1)).saveResult(any());
+        Mockito.verify(client, Mockito.times(1)).getForEntity("test", String.class);
+        Mockito.verify(fakeContext, Mockito.times(2)).getJobDetail();
     }
 
 }
