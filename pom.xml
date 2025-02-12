@@ -20,6 +20,8 @@
 		<org.mapstruct.version>1.6.3</org.mapstruct.version>
 		<springdoc.version>2.8.3</springdoc.version>
 		<hamcrest.version>3.0</hamcrest.version>
+		<failsafe.version>3.5.2</failsafe.version>
+		<jacoco.version>0.8.12</jacoco.version>
 	</properties>
 
 	<dependencies>
@@ -128,12 +130,36 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.5.2</version>
+				<version>${failsafe.version}</version>
 				<executions>
 					<execution>
 						<goals>
 							<goal>integration-test</goal>
 							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<configuration>
+					<output>file</output>
+					<append>true</append>
+				</configuration>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>
