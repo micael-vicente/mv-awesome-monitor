@@ -82,7 +82,7 @@ Endpoints can be operated through a swagger ui. Usually available at http://loca
 
 ### Create a new Job
 
-If the job is created with `enabled` set as true, the job won't be scheduled until it is updated to true.
+If the job is created with `enabled` set as false, the job won't be scheduled until it is updated to true.
 
 `POST /api/v1/jobs`
 
